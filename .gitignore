@@ -1,0 +1,34 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv
+.env
+
+# Logs
+logs/
+*.log
+
+# Uploads temporales (si usas Multer en memoria no aplica, pero por si acaso)
+uploads/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Build (por si se genera una versión compilada)
+dist/
+build/
+
+# Coverage (si haces pruebas con cobertura)
+coverage/
+
+# Cache
+.cache/
