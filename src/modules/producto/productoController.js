@@ -23,7 +23,9 @@ export const crearProducto = async (req, res) => {
     const { nombre, descripcion, categoria, tipo, variantes } = req.body;
 
     if (!nombre || !categoria) {
-      return res.status(400).json({ error: "El nombre y la categoría son obligatorios." });
+      return res
+        .status(400)
+        .json({ error: "El nombre y la categoría son obligatorios." });
     }
 
     let imagen = {};
@@ -129,6 +131,13 @@ export const listarProductos = async (req, res) => {
       filtro.tipo = tipo;
     }
 
+    const { estado } = req.query;
+    const filtro = {};
+
+    if (estado === "true") filtro.estado = true;
+    else if (estado === "false") filtro.estado = false;
+    // Si no viene el query o es "todos", no se filtra por estado
+
     const productos = await Producto.find(filtro).sort({ createdAt: -1 });
 
     res.status(200).json(productos);
@@ -161,7 +170,9 @@ export const cambiarEstadoProducto = async (req, res) => {
     const { estado } = req.body;
 
     if (typeof estado !== "boolean") {
-      return res.status(400).json({ error: "El campo 'estado' debe ser booleano (true o false)." });
+      return res
+        .status(400)
+        .json({ error: "El campo 'estado' debe ser booleano (true o false)." });
     }
 
     const producto = await Producto.findById(id);
