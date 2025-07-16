@@ -131,13 +131,6 @@ export const listarProductos = async (req, res) => {
       filtro.tipo = tipo;
     }
 
-    const { estado } = req.query;
-    const filtro = {};
-
-    if (estado === "true") filtro.estado = true;
-    else if (estado === "false") filtro.estado = false;
-    // Si no viene el query o es "todos", no se filtra por estado
-
     const productos = await Producto.find(filtro).sort({ createdAt: -1 });
 
     res.status(200).json(productos);
