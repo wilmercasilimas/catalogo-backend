@@ -114,31 +114,28 @@ export const eliminarProducto = async (req, res) => {
 };
 
 // ✅ Listar producto
+// ✅ Listar producto
 export const listarProductos = async (req, res) => {
   try {
     const { categoria, tipo, estado } = req.query;
 
     const filtro = {};
 
-    // Solo productos activos por defecto
-    filtro.estado = estado !== undefined ? estado === "true" : true;
+    if (estado === "true") filtro.estado = true;
+    else if (estado === "false") filtro.estado = false;
+    // Si estado === "all" o undefined => no se filtra
 
-    if (categoria) {
-      filtro.categoria = categoria;
-    }
-
-    if (tipo) {
-      filtro.tipo = tipo;
-    }
+    if (categoria) filtro.categoria = categoria;
+    if (tipo) filtro.tipo = tipo;
 
     const productos = await Producto.find(filtro).sort({ createdAt: -1 });
-
     res.status(200).json(productos);
   } catch (error) {
     console.error("Error al listar productos:", error);
     res.status(500).json({ error: "Error del servidor al listar productos." });
   }
 };
+
 
 // ✅ Obtener producto por ID
 export const obtenerProductoPorId = async (req, res) => {
