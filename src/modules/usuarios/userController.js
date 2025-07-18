@@ -1,4 +1,4 @@
-import Usuario from "./Usuario.js";
+import Usuario from "../models/Usuario.js";
 import bcrypt from "bcrypt";
 
 // Crear nuevo usuario
