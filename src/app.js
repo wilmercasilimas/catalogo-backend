@@ -7,6 +7,7 @@ import productoRoutes from "./modules/producto/productoRoutes.js";
 import usuarioRoutes from "./modules/usuarios/usuarioRoutes.js";
 import pedidoRoutes from "./modules/pedido/pedidoRoutes.js";
 import emailRoutes from "./modules/email/emailRoutes.js";
+import gestionUsuariosRoutes from "./modules/usuarios/gestionUsuariosRoutes.js";
 
 // Cargar variables de entorno
 dotenv.config();
@@ -37,6 +38,9 @@ app.use("/api/pedidos", pedidoRoutes);
 // Rutas de logs de correo
 // Esta ruta es protegida, solo accesible por admins
 app.use("/api/email-logs", emailRoutes);
+
+// Rutas de gestión de usuarios (solo admins)
+app.use("/api/usuarios", gestionUsuariosRoutes);
 
 // Conexión a MongoDB
 mongoose
