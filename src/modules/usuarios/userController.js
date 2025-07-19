@@ -8,7 +8,9 @@ export const crearUsuario = async (req, res) => {
     const { nombre, email, password, rol } = req.body;
 
     if (!nombre || !email || !password || !rol) {
-      return res.status(400).json({ message: "Todos los campos son obligatorios." });
+      return res
+        .status(400)
+        .json({ message: "Todos los campos son obligatorios." });
     }
 
     const existe = await Usuario.findOne({ email });
@@ -43,7 +45,9 @@ export const editarUsuario = async (req, res) => {
       usuario.email === "wilmercasilimas@gmail.com" &&
       solicitante.email !== "wilmercasilimas@gmail.com"
     ) {
-      return res.status(403).json({ message: "No tienes permiso para editar al super admin." });
+      return res
+        .status(403)
+        .json({ message: "No tienes permiso para editar al super admin." });
     }
 
     if (nombre) usuario.nombre = nombre;
@@ -69,7 +73,9 @@ export const eliminarUsuario = async (req, res) => {
     }
 
     if (usuario.email === "wilmercasilimas@gmail.com") {
-      return res.status(403).json({ message: "No se puede eliminar al super admin." });
+      return res
+        .status(403)
+        .json({ message: "No se puede eliminar al super admin." });
     }
 
     await Usuario.findByIdAndDelete(id);
