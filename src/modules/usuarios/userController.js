@@ -90,15 +90,25 @@ export const editarUsuario = async (req, res) => {
 export const eliminarUsuario = async (req, res) => {
   try {
     const { id } = req.params;
+    const solicitante = req.usuario;
+
     const usuario = await Usuario.findById(id);
     if (!usuario) {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
+    // ❌ Nadie puede eliminar al super admin (ni él mismo)
     if (usuario.email === "wilmercasilimas@gmail.com") {
       return res
         .status(403)
         .json({ message: "No se puede eliminar al super admin." });
+    }
+
+    // ✅ Solo el super admin puede eliminar a otros
+    if (solicitante.email !== "wilmercasilimas@gmail.com") {
+      return res
+        .status(403)
+        .json({ message: "Solo el super admin puede eliminar usuarios." });
     }
 
     await Usuario.findByIdAndDelete(id);
