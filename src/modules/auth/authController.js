@@ -3,11 +3,16 @@ import jwt from "jsonwebtoken";
 
 const generarToken = (usuario) => {
   return jwt.sign(
-    { id: usuario._id, rol: usuario.rol },
+    {
+      id: usuario._id,
+      email: usuario.email, // ✅ NECESARIO para validar si es el super admin
+      rol: usuario.rol,
+    },
     process.env.JWT_SECRET,
     { expiresIn: "7d" }
   );
 };
+
 
 // ✅ Registro de administrador
 export const registrarAdmin = async (req, res) => {

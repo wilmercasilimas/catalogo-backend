@@ -5,6 +5,11 @@ import bcrypt from "bcrypt";
 // Crear nuevo usuario
 export const crearUsuario = async (req, res) => {
   try {
+    // Solo el super admin puede crear usuarios
+    if (req.usuario.email !== "wilmercasilimas@gmail.com") {
+      return res.status(403).json({ message: "Acceso denegado: solo el super admin puede crear usuarios." });
+    }
+
     const { nombre, email, password, rol } = req.body;
 
     if (!nombre || !email || !password || !rol) {
