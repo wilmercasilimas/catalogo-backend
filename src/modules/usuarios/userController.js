@@ -7,7 +7,9 @@ export const crearUsuario = async (req, res) => {
   try {
     // Solo el super admin puede crear usuarios
     if (req.usuario.email !== "wilmercasilimas@gmail.com") {
-      return res.status(403).json({ message: "Acceso denegado: solo el super admin puede crear usuarios." });
+      return res.status(403).json({
+        message: "Acceso denegado: solo el super admin puede crear usuarios.",
+      });
     }
 
     const { nombre, email, password, rol } = req.body;
@@ -46,6 +48,7 @@ export const editarUsuario = async (req, res) => {
       return res.status(404).json({ message: "Usuario no encontrado." });
     }
 
+    // ❌ Nadie puede editar al super admin, excepto él mismo
     if (
       usuario.email === "wilmercasilimas@gmail.com" &&
       solicitante.email !== "wilmercasilimas@gmail.com"
@@ -55,10 +58,25 @@ export const editarUsuario = async (req, res) => {
         .json({ message: "No tienes permiso para editar al super admin." });
     }
 
+    // ❌ Si no es super admin, solo puede editarse a sí mismo
+    if (
+      solicitante.email !== "wilmercasilimas@gmail.com" &&
+      solicitante.id !== usuario._id.toString()
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Solo puedes editar tu propia cuenta." });
+    }
+
+    // ✅ Permitir modificación de campos
     if (nombre) usuario.nombre = nombre;
     if (email) usuario.email = email;
-    if (rol) usuario.rol = rol;
-    if (password) usuario.password = await bcrypt.hash(password, 10);
+    if (rol && solicitante.email === "wilmercasilimas@gmail.com") {
+      usuario.rol = rol; // solo el super admin puede cambiar rol
+    }
+    if (password) {
+      usuario.password = password;
+    }
 
     await usuario.save();
 
