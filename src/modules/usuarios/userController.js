@@ -73,7 +73,7 @@ export const editarUsuario = async (req, res) => {
       usuario.rol = rol; // solo el super admin puede cambiar rol
     }
     if (password) {
-      usuario.password = await bcrypt.hash(password, 10);
+      usuario.password = password;
     }
 
     await usuario.save();
