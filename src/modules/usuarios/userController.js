@@ -25,9 +25,7 @@ export const crearUsuario = async (req, res) => {
       return res.status(409).json({ message: "El correo ya está registrado." });
     }
 
-    const hash = await bcrypt.hash(password, 10);
-
-    const nuevo = new Usuario({ nombre, email, password: hash, rol });
+    const nuevo = new Usuario({ nombre, email, password, rol }); // ✔️ El hash lo hará el middleware pre("save")
     await nuevo.save();
 
     res.status(201).json({ message: "Usuario creado correctamente." });
